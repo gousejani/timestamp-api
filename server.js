@@ -3,6 +3,9 @@
 
 // init project
 var express = require('express');
+const moment = require('moment');
+// const moment = require('moment');
+
 var app = express();
 
 // enable CORS (https://en.wikipedia.org/wiki/Cross-origin_resource_sharing)
@@ -24,9 +27,24 @@ app.get("/api/hello", function (req, res) {
   res.json({greeting: 'hello API'});
 });
 
-
+app.get('/api/timestamp/:timestamp',(req,res)=>{
+  if(moment(req.params.timestamp, "YYYY-MM-DD",true).isValid() ){
+    var utc = moment(req.params.timestamp).utc('GMT').format("ddd, DD MMM YYYY mm:ss:SS");
+    utc +=" GMT";
+    var unix = parseInt(moment(req.params.timestamp).format("x"));
+  }else{
+    // res.send(parseInt(req.params.timestamp));
+    var utc = moment(parseInt(req.params.timestamp)).format("ddd, DD MMM YYYY mm:ss:SS");
+    utc +=" GMT";
+    var unix = parseInt(moment(parseInt(req.params.timestamp)).format("x"));
+  }
+  res.json({
+    unix,
+    utc
+  });
+});
 
 // listen for requests :)
-var listener = app.listen(process.env.PORT, function () {
+var listener = app.listen(process.env.PORT||5000, function () {
   console.log('Your app is listening on port ' + listener.address().port);
 });
