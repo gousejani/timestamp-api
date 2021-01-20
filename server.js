@@ -28,16 +28,27 @@ app.get("/api/hello", function (req, res) {
 });
 
 app.get('/api/timestamp/:timestamp',(req,res)=>{
-  if(moment(req.params.timestamp, "YYYY-MM-DD",true).isValid() ){
-    var utc = moment(req.params.timestamp).utc('GMT').format("ddd, DD MMM YYYY mm:ss:SS");
-    utc +=" GMT";
-    var unix = parseInt(moment(req.params.timestamp).format("x"));
-  }else{
-    // res.send(parseInt(req.params.timestamp));
-    var utc = moment(parseInt(req.params.timestamp)).format("ddd, DD MMM YYYY mm:ss:SS");
+  const date = new Date(req.params.timestamp);
+  // console.log(typeof date.toString());
+  if(date.toString()==='Invalid Date'){
+    var utc = moment(parseInt(req.params.timestamp)).format("ddd, DD MMM YYYY hh:mm:ss");
     utc +=" GMT";
     var unix = parseInt(moment(parseInt(req.params.timestamp)).format("x"));
+  }else{
+    var utc = moment(date).format("ddd, DD MMM YYYY hh:mm:ss");
+    utc +=" GMT";
+    var unix = parseInt(moment(date).format("x"));
   }
+  // if(moment(req.params.timestamp, "YYYY-MM-DD",true).isValid() ){
+  //   var utc = moment(req.params.timestamp).utc('GMT').format("ddd, DD MMM YYYY mm:ss:SS");
+  //   utc +=" GMT";
+  //   var unix = parseInt(moment(req.params.timestamp).format("x"));
+  // }else{
+  //   // res.send(parseInt(req.params.timestamp));
+  //   var utc = moment(parseInt(req.params.timestamp)).format("ddd, DD MMM YYYY mm:ss:SS");
+  //   utc +=" GMT";
+  //   var unix = parseInt(moment(parseInt(req.params.timestamp)).format("x"));
+  // }
   res.json({
     unix,
     utc
