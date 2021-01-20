@@ -31,13 +31,13 @@ app.get('/api/timestamp/:timestamp',(req,res)=>{
   const date = new Date(req.params.timestamp);
   // console.log(typeof date.toString());
   if(date.toString()==='Invalid Date'){
-    var utc = moment(parseInt(req.params.timestamp)).format("ddd, DD MMM YYYY hh:mm:ss");
+    var utc = moment.utc(parseInt(req.params.timestamp)).format("ddd, DD MMM YYYY HH:mm:ss");
     utc +=" GMT";
-    var unix = parseInt(moment(parseInt(req.params.timestamp)).format("x"));
+    var unix = parseInt(moment.utc(parseInt(req.params.timestamp)).format("x"));
   }else{
-    var utc = moment(date).format("ddd, DD MMM YYYY hh:mm:ss");
+    var utc = moment.utc(date).format("ddd, DD MMM YYYY HH:mm:ss");
     utc +=" GMT";
-    var unix = parseInt(moment(date).format("x"));
+    var unix = parseInt(moment.utc(date).format("x"));
   }
   // if(moment(req.params.timestamp, "YYYY-MM-DD",true).isValid() ){
   //   var utc = moment(req.params.timestamp).utc('GMT').format("ddd, DD MMM YYYY mm:ss:SS");
